@@ -1,5 +1,6 @@
 package com.will.todo_backend.service;
 
+import com.will.todo_backend.exceptions.TodoNotFoundException;
 import com.will.todo_backend.model.api.TodoInput;
 import com.will.todo_backend.model.api.TodoOutput;
 import com.will.todo_backend.model.entity.TodoEntity;
@@ -23,39 +24,40 @@ public class TodoService {
     }
 
     public TodoOutput createTodo(TodoInput todoInput) {
-        TodoEntity entity = todoRepo.save(
+        return saveThenReturn(
                 new TodoEntity(
                         todoInput.getTitle(),
                         todoInput.getDescription(),
                         todoInput.getDefcon(),
                         todoInput.getDueDate()));
-
-        return mapEntityToOutput(entity);
     }
 
     public TodoOutput updateTodo(Long id, TodoInput todoInput) {
-        Optional<TodoEntity> maybeEntity = todoRepo.findById(id);
-        if (maybeEntity.isPresent()) {
-            TodoEntity entity = maybeEntity.get();
-            entity.setTitle(todoInput.getTitle());
-            entity.setDescription(todoInput.getDescription());
-            entity.setDefcon(todoInput.getDefcon());
-            entity.setDueDate(todoInput.getDueDate());
-            todoRepo.save(entity);
-            return mapEntityToOutput(entity);
-        }
-        return null;
+        TodoEntity entity = findTodoById(id);
+
+        entity.setTitle(todoInput.getTitle());
+        entity.setDescription(todoInput.getDescription());
+        entity.setDefcon(todoInput.getDefcon());
+        entity.setDueDate(todoInput.getDueDate());
+
+        return saveThenReturn(entity);
     }
 
     public TodoOutput toggleComplete(Long id){
-        Optional<TodoEntity> maybeEntity = todoRepo.findById(id);
-        if (maybeEntity.isPresent()) {
-            TodoEntity entity = maybeEntity.get();
-            entity.setComplete(!entity.isComplete());
-            todoRepo.save(entity);
-            return mapEntityToOutput(entity);
-        }
-        return null;
+        TodoEntity entity = findTodoById(id);
+
+        entity.setComplete(!entity.isComplete());
+        return saveThenReturn(entity);
+    }
+
+    private TodoEntity findTodoById(Long id) {
+        return todoRepo.findById(id)
+                .orElseThrow(() -> new TodoNotFoundException("todo not found with id: " + id));
+    }
+
+    private TodoOutput saveThenReturn(TodoEntity entity) {
+        todoRepo.save(entity);
+        return mapEntityToOutput(entity);
     }
 
     private TodoOutput mapEntityToOutput(TodoEntity entity){
