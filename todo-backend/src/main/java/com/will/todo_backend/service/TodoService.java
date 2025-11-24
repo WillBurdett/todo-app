@@ -7,6 +7,7 @@ import com.will.todo_backend.repository.TodoRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TodoService {
@@ -30,6 +31,31 @@ public class TodoService {
                         todoInput.getDueDate()));
 
         return mapEntityToOutput(entity);
+    }
+
+    public TodoOutput updateTodo(Long id, TodoInput todoInput) {
+        Optional<TodoEntity> maybeEntity = todoRepo.findById(id);
+        if (maybeEntity.isPresent()) {
+            TodoEntity entity = maybeEntity.get();
+            entity.setTitle(todoInput.getTitle());
+            entity.setDescription(todoInput.getDescription());
+            entity.setDefcon(todoInput.getDefcon());
+            entity.setDueDate(todoInput.getDueDate());
+            todoRepo.save(entity);
+            return mapEntityToOutput(entity);
+        }
+        return null;
+    }
+
+    public TodoOutput toggleComplete(Long id){
+        Optional<TodoEntity> maybeEntity = todoRepo.findById(id);
+        if (maybeEntity.isPresent()) {
+            TodoEntity entity = maybeEntity.get();
+            entity.setComplete(!entity.isComplete());
+            todoRepo.save(entity);
+            return mapEntityToOutput(entity);
+        }
+        return null;
     }
 
     private TodoOutput mapEntityToOutput(TodoEntity entity){

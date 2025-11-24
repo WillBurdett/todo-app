@@ -26,4 +26,14 @@ public class TodoController {
     public TodoOutput createTodo(@RequestBody TodoInput todoInput) {
         return todoService.createTodo(todoInput);
     }
+
+    @PutMapping(path = "/{id}")
+    public TodoOutput updateTodo(@PathVariable Long id, @RequestBody TodoInput todoInput) {
+        return todoService.updateTodo(id, todoInput);
+    }
+
+    @PutMapping(path = "/toggle-complete/{id}")
+    public TodoOutput toggleComplete(@PathVariable Long id) {
+        return todoService.toggleComplete(id);
+    }
 }
