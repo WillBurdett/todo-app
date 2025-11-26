@@ -5,10 +5,10 @@ import com.will.todo_backend.model.api.TodoInput;
 import com.will.todo_backend.model.api.TodoOutput;
 import com.will.todo_backend.model.entity.TodoEntity;
 import com.will.todo_backend.repository.TodoRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TodoService {
@@ -55,6 +55,7 @@ public class TodoService {
                 .orElseThrow(() -> new TodoNotFoundException("todo not found with id: " + id));
     }
 
+    @Transactional
     private TodoOutput saveThenReturn(TodoEntity entity) {
         todoRepo.save(entity);
         return mapEntityToOutput(entity);
