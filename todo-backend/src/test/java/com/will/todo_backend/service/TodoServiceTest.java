@@ -26,6 +26,8 @@ class TodoServiceTest {
     @InjectMocks
     private TodoService undertest;
 
+    private final Long ID = 1L;
+
     @BeforeEach
     void setup() {
         MockitoAnnotations.openMocks(this);
@@ -38,8 +40,8 @@ class TodoServiceTest {
         void return_all_todos_when_todos_exist() {
             // given
             List<TodoEntity> todos = List.of(
-                    createTodoEntityWithTitle("task 1"),
-                    createTodoEntityWithTitle("task 2")
+                    createTodoEntity(),
+                    createTodoEntity()
             );
             when(todoRepo.findAll()).thenReturn(todos);
 
@@ -48,8 +50,6 @@ class TodoServiceTest {
 
             // then
             assertEquals(2, result.size());
-            assertEquals("task 1", result.get(0).getTitle());
-            assertEquals("task 2", result.get(1).getTitle());
             verify(todoRepo, times(1)).findAll();
         }
 
@@ -72,60 +72,84 @@ class TodoServiceTest {
     class create_todo_should {
 
         @Test
-        void create_todo_then_return_output() {
+        void save_todo_then_return_output() {
             // given
-            TodoInput input = createTodoInputWithTitle("task 1");
+            TodoInput input = createTodoInput();
 
             // when
             TodoOutput actualOutput = undertest.createTodo(input);
 
             // then
-            TodoEntity expectedEntity = createTodoEntityWithTitle("task 1");
-            TodoOutput expectedOutput = createTodoOutputWithTitle("task 1");
+            TodoEntity expectedEntity = createTodoEntity();
+            TodoOutput expectedOutput = createTodoOutput();
 
-            verify(todoRepo).save(expectedEntity);
-            assertEquals(expectedOutput, actualOutput);
+            assertEntitySavedOutputReturned(expectedEntity, expectedOutput, actualOutput);
         }
     }
 
     @Nested
     class update_todo_should {
 
-        @BeforeEach
-        void setup() {
-            when(todoRepo.findById(1L)).thenReturn(Optional.of(createTodoEntityWithTitle("task 1")));
-        }
-
         @Test
-        void update_todo_entity_then_return_updated_output() {
+        void save_todo_entity_with_updated_fields_then_return_updated_output() {
             // given
-            TodoInput input = createTodoInputWithTitle("task 2");
+            stubTodoRepoFindById(createTodoEntity());
+            TodoInput input = createTodoInput();
+            input.setTitle("new title");
 
             // when
-            TodoOutput actualOutput = undertest.updateTodo(1L, input);
+            TodoOutput actualOutput = undertest.updateTodo(ID, input);
 
             // then
-            TodoEntity expectedEntity = createTodoEntityWithTitle("task 2");
-            TodoOutput expectedOutput = createTodoOutputWithTitle("task 2");
+            TodoEntity expectedEntity = createTodoEntity();
+            expectedEntity.setTitle("new title");
+            TodoOutput expectedOutput = createTodoOutput();
+            expectedOutput.setTitle("new title");
+
+            assertEntitySavedOutputReturned(expectedEntity, expectedOutput, actualOutput);
+        }
+    }
+
+    @Nested
+    class toggleComplete_should {
+
+        @Test
+        void save_entity_with_opposite_complete_status() {
+            // given
+            stubTodoRepoFindById(createTodoEntity());
+
+            // when
+            TodoOutput actualOutput = undertest.toggleComplete(ID);
+
+            // then
+            TodoEntity expectedEntity = createTodoEntity();;
+            expectedEntity.setComplete(true);
+            TodoOutput expectedOutput = createTodoOutput();
+            expectedOutput.setComplete(true);
 
             verify(todoRepo).save(expectedEntity);
             assertEquals(expectedOutput, actualOutput);
         }
     }
 
-    @Test
-    void toggleComplete() {
+    private void assertEntitySavedOutputReturned(TodoEntity entity, TodoOutput expected, TodoOutput actual) {
+        verify(todoRepo).save(entity);
+        assertEquals(expected, actual);
     }
 
-    private TodoEntity createTodoEntityWithTitle(String title) {
-        return new TodoEntity(title, "test todo", Defcon.ONE, null);
+    private void stubTodoRepoFindById(TodoEntity entity) {
+        when(todoRepo.findById(ID)).thenReturn(Optional.ofNullable(entity));
     }
 
-    private TodoInput createTodoInputWithTitle(String title) {
-        return new TodoInput(title, "test todo", Defcon.ONE, null);
+    private TodoEntity createTodoEntity() {
+        return new TodoEntity("test title", "test description", Defcon.ONE, null);
     }
 
-    private TodoOutput createTodoOutputWithTitle(String title) {
-        return new TodoOutput(null, title, "test todo", Defcon.ONE, LocalDate.now(), null, false);
+    private TodoInput createTodoInput() {
+        return new TodoInput("test title", "test description", Defcon.ONE, null);
+    }
+
+    private TodoOutput createTodoOutput() {
+        return new TodoOutput(null, "test title", "test description", Defcon.ONE, LocalDate.now(), null, false);
     }
 }
