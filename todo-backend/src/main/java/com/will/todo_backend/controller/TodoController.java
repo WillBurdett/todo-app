@@ -3,6 +3,7 @@ package com.will.todo_backend.controller;
 import com.will.todo_backend.model.api.TodoInput;
 import com.will.todo_backend.model.api.TodoOutput;
 import com.will.todo_backend.service.TodoService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,13 +27,14 @@ public class TodoController {
     }
 
     @PostMapping
-    public ResponseEntity<TodoOutput> createTodo(@RequestBody TodoInput todoInput) {
+    public ResponseEntity<TodoOutput> createTodo(@Valid @RequestBody TodoInput todoInput) {
+        validateTodoInput(todoInput);
         TodoOutput responseBody = todoService.createTodo(todoInput);
         return new ResponseEntity<>(responseBody, HttpStatus.CREATED);
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<TodoOutput> updateTodo(@PathVariable Long id, @RequestBody TodoInput todoInput) {
+    public ResponseEntity<TodoOutput> updateTodo(@PathVariable Long id, @Valid @RequestBody TodoInput todoInput) {
         TodoOutput responseBody = todoService.updateTodo(id, todoInput);
         return new ResponseEntity<>(responseBody, HttpStatus.OK);
     }
@@ -47,5 +49,9 @@ public class TodoController {
     public ResponseEntity<TodoOutput> toggleComplete(@PathVariable Long id) {
         TodoOutput responseBody = todoService.toggleComplete(id);
         return  new ResponseEntity<>(responseBody, HttpStatus.OK);
+    }
+
+    private void validateTodoInput(TodoInput input) {
+
     }
 }
