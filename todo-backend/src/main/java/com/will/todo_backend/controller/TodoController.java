@@ -3,6 +3,8 @@ package com.will.todo_backend.controller;
 import com.will.todo_backend.model.api.TodoInput;
 import com.will.todo_backend.model.api.TodoOutput;
 import com.will.todo_backend.service.TodoService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,22 +20,32 @@ public class TodoController {
     }
 
     @GetMapping
-    public List<TodoOutput> getAllTodos() {
-        return todoService.getAllTodos();
+    public ResponseEntity<List<TodoOutput>> getAllTodos() {
+        List<TodoOutput> responseBody = todoService.getAllTodos();
+        return new ResponseEntity<>(responseBody, HttpStatus.OK);
     }
 
     @PostMapping
-    public TodoOutput createTodo(@RequestBody TodoInput todoInput) {
-        return todoService.createTodo(todoInput);
+    public ResponseEntity<TodoOutput> createTodo(@RequestBody TodoInput todoInput) {
+        TodoOutput responseBody = todoService.createTodo(todoInput);
+        return new ResponseEntity<>(responseBody, HttpStatus.CREATED);
     }
 
     @PutMapping(path = "/{id}")
-    public TodoOutput updateTodo(@PathVariable Long id, @RequestBody TodoInput todoInput) {
-        return todoService.updateTodo(id, todoInput);
+    public ResponseEntity<TodoOutput> updateTodo(@PathVariable Long id, @RequestBody TodoInput todoInput) {
+        TodoOutput responseBody = todoService.updateTodo(id, todoInput);
+        return new ResponseEntity<>(responseBody, HttpStatus.OK);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Void> deleteTodo(@PathVariable Long id) {
+        todoService.deleteTodo(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping(path = "/toggle-complete/{id}")
-    public TodoOutput toggleComplete(@PathVariable Long id) {
-        return todoService.toggleComplete(id);
+    public ResponseEntity<TodoOutput> toggleComplete(@PathVariable Long id) {
+        TodoOutput responseBody = todoService.toggleComplete(id);
+        return  new ResponseEntity<>(responseBody, HttpStatus.OK);
     }
 }

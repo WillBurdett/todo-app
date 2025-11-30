@@ -43,6 +43,11 @@ public class TodoService {
         return saveThenReturn(entity);
     }
 
+    public void deleteTodo(Long id) {
+        TodoEntity entity = findTodoById(id);
+        todoRepo.delete(entity);
+    }
+
     public TodoOutput toggleComplete(Long id){
         TodoEntity entity = findTodoById(id);
 
