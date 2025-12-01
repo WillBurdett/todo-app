@@ -1,5 +1,6 @@
 package com.will.todo_backend.config;
 
+import com.will.todo_backend.exceptions.DueDateAlreadyPastException;
 import com.will.todo_backend.exceptions.TodoNotFoundException;
 import com.will.todo_backend.model.api.ErrorDetails;
 import org.springframework.http.HttpStatus;
@@ -24,8 +25,13 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(TodoNotFoundException.class)
-    public final ResponseEntity<ErrorDetails> handleClassInfoNotFoundExceptions(Exception ex, WebRequest request) throws Exception {
+    public final ResponseEntity<ErrorDetails> handleTodoNotFoundExceptions(Exception ex, WebRequest request) throws Exception {
         return createThenReturnHttpCode(ex, request, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(DueDateAlreadyPastException.class)
+    public final ResponseEntity<ErrorDetails> handleDueDateAlreadyPastExceptions(Exception ex, WebRequest request) throws Exception {
+        return createThenReturnHttpCode(ex, request, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)

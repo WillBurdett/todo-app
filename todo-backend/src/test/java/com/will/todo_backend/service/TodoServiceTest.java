@@ -1,5 +1,7 @@
 package com.will.todo_backend.service;
 
+import com.will.todo_backend.exceptions.DueDateAlreadyPastException;
+import com.will.todo_backend.exceptions.TodoNotFoundException;
 import com.will.todo_backend.model.api.TodoInput;
 import com.will.todo_backend.model.api.TodoOutput;
 import com.will.todo_backend.model.entity.TodoEntity;
@@ -9,10 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.time.Clock;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
+import java.time.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -97,6 +96,20 @@ class TodoServiceTest {
 
             assertEntitySavedOutputReturned(expectedEntity, expectedOutput, actualOutput);
         }
+
+        @Test
+        void throw_400_when_dueDate_is_present_but_has_already_past() {
+            // given
+            TodoInput input = createTodoInput();
+            input.setDueDate(LocalDate.of(2023, 12, 31));
+
+            // when + then
+            Exception ex = assertThrows(DueDateAlreadyPastException.class, () -> {
+                undertest.createTodo(input);
+            });
+
+            assertEquals("Cannot create todo: Due date has already past!", ex.getMessage());
+        }
     }
 
     @Nested
@@ -120,6 +133,19 @@ class TodoServiceTest {
 
             assertEntitySavedOutputReturned(expectedEntity, expectedOutput, actualOutput);
         }
+
+        @Test
+        void throw_404_when_todo_does_not_exist() {
+            // given
+            TodoInput input = createTodoInput();
+
+            // when + then
+            Exception ex = assertThrows(TodoNotFoundException.class, () -> {
+                undertest.updateTodo(ID, input);
+            });
+
+            assertEquals("Todo not found with id: " + ID, ex.getMessage());
+        }
     }
 
     @Nested
@@ -141,6 +167,16 @@ class TodoServiceTest {
 
             verify(todoRepo).save(expectedEntity);
             assertEquals(expectedOutput, actualOutput);
+        }
+
+        @Test
+        void throw_404_when_todo_does_not_exist() {
+            // when + then
+            Exception ex = assertThrows(TodoNotFoundException.class, () -> {
+                undertest.toggleComplete(ID);
+            });
+
+            assertEquals("Todo not found with id: " + ID, ex.getMessage());
         }
     }
 

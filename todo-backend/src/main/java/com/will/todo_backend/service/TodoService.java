@@ -1,5 +1,6 @@
 package com.will.todo_backend.service;
 
+import com.will.todo_backend.exceptions.DueDateAlreadyPastException;
 import com.will.todo_backend.exceptions.TodoNotFoundException;
 import com.will.todo_backend.model.api.TodoInput;
 import com.will.todo_backend.model.api.TodoOutput;
@@ -30,6 +31,7 @@ public class TodoService {
     }
 
     public TodoOutput createTodo(TodoInput todoInput) {
+        validateDueDate(todoInput.getDueDate());
         return saveThenReturn(
                 new TodoEntity(
                         todoInput.getTitle(),
@@ -64,7 +66,13 @@ public class TodoService {
 
     private TodoEntity findTodoById(Long id) {
         return todoRepo.findById(id)
-                .orElseThrow(() -> new TodoNotFoundException("todo not found with id: " + id));
+                .orElseThrow(() -> new TodoNotFoundException("Todo not found with id: " + id));
+    }
+
+    private void validateDueDate(LocalDate dueDate) {
+        if (dueDate != null && dueDate.isBefore(LocalDate.now(clock))) {
+            throw new DueDateAlreadyPastException("Cannot create todo: Due date has already past!");
+        }
     }
 
     @Transactional
