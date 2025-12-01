@@ -6,16 +6,22 @@ import com.will.todo_backend.model.api.TodoOutput;
 import com.will.todo_backend.model.entity.TodoEntity;
 import com.will.todo_backend.repository.TodoRepo;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Clock;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
 public class TodoService {
 
+    private final Clock clock;
+
     private final TodoRepo todoRepo;
 
-    public TodoService(TodoRepo todoRepo) {
+    public TodoService(Clock clock, TodoRepo todoRepo) {
+        this.clock = clock;
         this.todoRepo = todoRepo;
     }
 
@@ -29,6 +35,7 @@ public class TodoService {
                         todoInput.getTitle(),
                         todoInput.getDescription(),
                         todoInput.getDefcon(),
+                        LocalDate.now(clock),
                         todoInput.getDueDate()));
     }
 

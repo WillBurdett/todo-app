@@ -46,8 +46,7 @@ class TodoControllerPutTest {
             var result = performPutWith(getJsonAsString("input/valid_todo_input.json"));
 
             // then
-            LocalDate date = LocalDate.now();
-            String expected = String.format(getJsonAsString("output/valid_todo_output.json"), date);
+            String expected = getJsonAsString("output/valid_todo_output.json");
 
             assertEquals(200, result.getStatus());
             assertJsonEquals(expected, result.getContentAsString());
@@ -140,7 +139,7 @@ class TodoControllerPutTest {
                     .getResponse();
 
             // then
-            String expected = String.format(getJsonAsString("output/valid_todo_output.json"), LocalDate.now());
+            String expected = getJsonAsString("output/valid_todo_output.json");
 
             assertEquals(200, result.getStatus());
             assertJsonEquals(expected, result.getContentAsString());

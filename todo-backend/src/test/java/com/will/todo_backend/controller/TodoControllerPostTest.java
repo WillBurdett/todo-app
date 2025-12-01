@@ -49,8 +49,7 @@ public class TodoControllerPostTest {
             var result = performPostWith(getJsonAsString("input/valid_todo_input.json"));
 
             // then
-            LocalDate date = LocalDate.now();
-            String expected = String.format(getJsonAsString("output/valid_todo_output.json"), date);
+            String expected = getJsonAsString("output/valid_todo_output.json");
 
             assertEquals(201, result.getStatus());
             assertJsonEquals(expected, result.getContentAsString());

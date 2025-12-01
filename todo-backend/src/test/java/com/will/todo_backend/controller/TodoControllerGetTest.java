@@ -46,8 +46,7 @@ public class TodoControllerGetTest {
             var result = mockMvc.perform(get("/todo")).andReturn().getResponse();
 
             // then
-            LocalDate date = LocalDate.now();
-            String expected = String.format(getJsonAsString("output/getAllTodos_valid.json"), date, date);
+            String expected = getJsonAsString("output/getAllTodos_valid.json");
 
             assertEquals(200, result.getStatus());
             assertJsonEquals(expected, result.getContentAsString());

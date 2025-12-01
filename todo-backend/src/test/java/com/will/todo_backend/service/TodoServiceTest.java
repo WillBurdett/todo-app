@@ -9,6 +9,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +22,9 @@ import static org.mockito.Mockito.*;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class TodoServiceTest {
+
+    @Mock
+    private Clock clock;
 
     @Mock
     private TodoRepo todoRepo;
@@ -30,6 +37,12 @@ class TodoServiceTest {
     @BeforeEach
     void setup() {
         MockitoAnnotations.openMocks(this);
+
+        Instant fixedInstant = Instant.parse("2024-01-01T10:00:00Z");
+        ZoneId fixedZone = ZoneOffset.UTC;
+
+        when(clock.instant()).thenReturn(fixedInstant);
+        when(clock.getZone()).thenReturn(fixedZone);
     }
 
     @Nested
@@ -39,8 +52,8 @@ class TodoServiceTest {
         void return_all_todos_when_todos_exist() {
             // given
             List<TodoEntity> todos = List.of(
-                    createTodoEntity(),
-                    createTodoEntity()
+                    createTodoEntity(1L),
+                    createTodoEntity(2L)
             );
             when(todoRepo.findAll()).thenReturn(todos);
 
@@ -79,7 +92,7 @@ class TodoServiceTest {
             TodoOutput actualOutput = undertest.createTodo(input);
 
             // then
-            TodoEntity expectedEntity = createTodoEntity();
+            TodoEntity expectedEntity = createTodoEntity(null);
             TodoOutput expectedOutput = createTodoOutput(null);
 
             assertEntitySavedOutputReturned(expectedEntity, expectedOutput, actualOutput);
@@ -92,7 +105,7 @@ class TodoServiceTest {
         @Test
         void save_todo_entity_with_updated_fields_then_return_updated_output() {
             // given
-            stubTodoRepoFindById(createTodoEntity());
+            stubTodoRepoFindById(createTodoEntity(ID));
             TodoInput input = createTodoInput();
             input.setTitle("new title");
 
@@ -100,9 +113,9 @@ class TodoServiceTest {
             TodoOutput actualOutput = undertest.updateTodo(ID, input);
 
             // then
-            TodoEntity expectedEntity = createTodoEntity();
+            TodoEntity expectedEntity = createTodoEntity(ID);
             expectedEntity.setTitle("new title");
-            TodoOutput expectedOutput = createTodoOutput(null);
+            TodoOutput expectedOutput = createTodoOutput(ID);
             expectedOutput.setTitle("new title");
 
             assertEntitySavedOutputReturned(expectedEntity, expectedOutput, actualOutput);
@@ -115,15 +128,15 @@ class TodoServiceTest {
         @Test
         void save_entity_with_opposite_complete_status() {
             // given
-            stubTodoRepoFindById(createTodoEntity());
+            stubTodoRepoFindById(createTodoEntity(ID));
 
             // when
             TodoOutput actualOutput = undertest.toggleComplete(ID);
 
             // then
-            TodoEntity expectedEntity = createTodoEntity();;
+            TodoEntity expectedEntity = createTodoEntity(ID);;
             expectedEntity.setComplete(true);
-            TodoOutput expectedOutput = createTodoOutput(null);
+            TodoOutput expectedOutput = createTodoOutput(ID);
             expectedOutput.setComplete(true);
 
             verify(todoRepo).save(expectedEntity);
