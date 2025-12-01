@@ -6,7 +6,10 @@ import com.will.todo_backend.model.api.TodoInput;
 import com.will.todo_backend.model.api.TodoOutput;
 import com.will.todo_backend.model.enums.Defcon;
 import com.will.todo_backend.service.TodoService;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
@@ -18,16 +21,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @WebMvcTest(TodoController.class)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-class TodoControllerTest {
+public class TodoControllerPostTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -39,25 +40,6 @@ class TodoControllerTest {
     private ObjectMapper mapper;
 
     private TodoController undertest;
-
-    @Nested
-    class getAllTodos_should {
-
-        @Test
-        void return_all_todo_outputs_with_200() throws Exception {
-            // given
-            when(todoService.getAllTodos()).thenReturn(List.of(createTodoOutput(1L), createTodoOutput(2L)));
-
-            // when
-            var result = mockMvc.perform(get("/todo")).andReturn().getResponse();
-
-            // then
-            String expected = getJsonAsString("output/getAllTodos_valid.json");
-
-            assertEquals(200, result.getStatus());
-            assertJsonEquals(expected, result.getContentAsString());
-        }
-    }
 
     @Nested
     class createTodo_should_{
@@ -147,135 +129,6 @@ class TodoControllerTest {
                             .content(input))
                     .andReturn()
                     .getResponse();
-        }
-    }
-
-    @Nested
-    class updateTodo_should {
-
-        @Test
-        void return_todo_output_with_200() throws Exception {
-            // given
-            TodoInput todoInput = createTodoInput();
-            when(todoService.updateTodo(1L, todoInput)).thenReturn(createTodoOutput(1L));
-
-            // when
-            var result = performPutWith(getJsonAsString("input/valid_todo_input.json"));
-
-            // then
-            String expected = getJsonAsString("output/valid_todo_output.json");
-
-            assertEquals(200, result.getStatus());
-            assertJsonEquals(expected, result.getContentAsString());
-        }
-
-        @Test
-        void return_422_when_title_blank() throws Exception {
-            // when
-            var result = performPutWith("""
-                                    {
-                                       "title": "",
-                                       "description": "test description",
-                                       "defcon": "1",
-                                       "dueDate": null
-                                    }
-                                    """);
-
-            // then
-            assertEquals(422, result.getStatus());
-        }
-
-        @Test
-        void return_422_when_description_blank() throws Exception {
-            // when
-            var result = performPutWith("""
-                                    {
-                                       "title": "test title",
-                                       "description": "",
-                                       "defcon": "1",
-                                       "dueDate": null
-                                    }
-                                    """);
-
-            // then
-            assertEquals(422, result.getStatus());
-        }
-
-        @Test
-        void return_422_when_invalid_defcon() throws Exception {
-            // when
-            var result = performPutWith("""
-                                    {
-                                       "title": "test title",
-                                       "description": "test description",
-                                       "defcon": "6",
-                                       "dueDate": null
-                                    }
-                                    """);
-
-            // then
-            assertEquals(422, result.getStatus());
-        }
-
-        @Test
-        void return_422_when_invalid_date_format() throws Exception {
-            // when
-            var result = performPutWith("""
-                                    {
-                                       "title": "test title",
-                                       "description": "test description",
-                                       "defcon": "1",
-                                       "dueDate": 20-01-01
-                                    }
-                                    """);
-
-            // then
-            assertEquals(422, result.getStatus());
-        }
-
-        private MockHttpServletResponse performPutWith(String input) throws Exception {
-            return mockMvc.perform(put("/todo/1")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(input))
-                    .andReturn()
-                    .getResponse();
-        }
-    }
-
-    @Nested
-    class deleteTodo_should {
-
-        @Test
-        void return_204() throws Exception {
-            // when
-            var result = mockMvc.perform(delete("/todo/1"))
-                    .andReturn()
-                    .getResponse();
-
-            // then
-            verify(todoService).deleteTodo(1L);
-            assertEquals(204, result.getStatus());
-        }
-    }
-
-    @Nested
-    class toggleComplete_should {
-
-        @Test
-        void return_todo_output_with_200() throws Exception {
-            // given
-            when(todoService.toggleComplete(1L)).thenReturn(createTodoOutput(1L));
-
-            // when
-            var result = mockMvc.perform(put("/todo/toggle-complete/1"))
-                    .andReturn()
-                    .getResponse();
-
-            // then
-            String expected = getJsonAsString("output/valid_todo_output.json");
-
-            assertEquals(200, result.getStatus());
-            assertJsonEquals(expected, result.getContentAsString());
         }
     }
 
