@@ -3,17 +3,16 @@ package com.will.todo_backend.service;
 import com.will.todo_backend.model.api.TodoInput;
 import com.will.todo_backend.model.api.TodoOutput;
 import com.will.todo_backend.model.entity.TodoEntity;
-import com.will.todo_backend.model.enums.Defcon;
 import com.will.todo_backend.repository.TodoRepo;
 import org.junit.jupiter.api.*;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static com.will.todo_backend.utils.TestUtils.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -81,7 +80,7 @@ class TodoServiceTest {
 
             // then
             TodoEntity expectedEntity = createTodoEntity();
-            TodoOutput expectedOutput = createTodoOutput();
+            TodoOutput expectedOutput = createTodoOutput(null);
 
             assertEntitySavedOutputReturned(expectedEntity, expectedOutput, actualOutput);
         }
@@ -103,7 +102,7 @@ class TodoServiceTest {
             // then
             TodoEntity expectedEntity = createTodoEntity();
             expectedEntity.setTitle("new title");
-            TodoOutput expectedOutput = createTodoOutput();
+            TodoOutput expectedOutput = createTodoOutput(null);
             expectedOutput.setTitle("new title");
 
             assertEntitySavedOutputReturned(expectedEntity, expectedOutput, actualOutput);
@@ -124,7 +123,7 @@ class TodoServiceTest {
             // then
             TodoEntity expectedEntity = createTodoEntity();;
             expectedEntity.setComplete(true);
-            TodoOutput expectedOutput = createTodoOutput();
+            TodoOutput expectedOutput = createTodoOutput(null);
             expectedOutput.setComplete(true);
 
             verify(todoRepo).save(expectedEntity);
@@ -141,15 +140,4 @@ class TodoServiceTest {
         when(todoRepo.findById(ID)).thenReturn(Optional.ofNullable(entity));
     }
 
-    private TodoEntity createTodoEntity() {
-        return new TodoEntity("test title", "test description", Defcon.ONE, null);
-    }
-
-    private TodoInput createTodoInput() {
-        return new TodoInput("test title", "test description", Defcon.ONE, null);
-    }
-
-    private TodoOutput createTodoOutput() {
-        return new TodoOutput(null, "test title", "test description", Defcon.ONE, LocalDate.now(), null, false);
-    }
 }

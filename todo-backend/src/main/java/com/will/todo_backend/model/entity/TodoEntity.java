@@ -3,13 +3,15 @@ package com.will.todo_backend.model.entity;
 import com.will.todo_backend.model.enums.Defcon;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 
-@Entity
 @Data
+@Entity
+@AllArgsConstructor
 public class TodoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,3 +41,4 @@ public class TodoEntity {
         this.complete = false;
     }
 }
+

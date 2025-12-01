@@ -1,10 +1,7 @@
 package com.will.todo_backend.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.will.todo_backend.model.api.TodoInput;
-import com.will.todo_backend.model.api.TodoOutput;
-import com.will.todo_backend.model.enums.Defcon;
 import com.will.todo_backend.service.TodoService;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -17,11 +14,9 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.LocalDate;
 
+import static com.will.todo_backend.utils.TestUtils.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -54,7 +49,8 @@ public class TodoControllerPostTest {
             var result = performPostWith(getJsonAsString("input/valid_todo_input.json"));
 
             // then
-            String expected = getJsonAsString("output/valid_todo_output.json");
+            LocalDate date = LocalDate.now();
+            String expected = String.format(getJsonAsString("output/valid_todo_output.json"), date);
 
             assertEquals(201, result.getStatus());
             assertJsonEquals(expected, result.getContentAsString());
@@ -130,26 +126,5 @@ public class TodoControllerPostTest {
                     .andReturn()
                     .getResponse();
         }
-    }
-
-    private void assertJsonEquals(String expected, String actual) throws JsonProcessingException {
-        assertEquals(
-                mapper.readTree(expected),
-                mapper.readTree(actual)
-        );
-    }
-
-    private String getJsonAsString(String path) throws IOException {
-        Path fileName
-                = Path.of("src/test/java/com/will/todo_backend/" + path);
-        return Files.readString(fileName);
-    }
-
-    private TodoInput createTodoInput() {
-        return new TodoInput("test title", "test description", Defcon.ONE, null);
-    }
-
-    private TodoOutput createTodoOutput(Long id) {
-        return new TodoOutput(id, "test title", "test description", Defcon.ONE, LocalDate.of(2000,1,1), null, false);
     }
 }
