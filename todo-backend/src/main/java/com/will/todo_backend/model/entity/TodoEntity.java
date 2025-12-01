@@ -40,5 +40,14 @@ public class TodoEntity {
         this.dueDate = dueDate;
         this.complete = false;
     }
+
+    public TodoEntity(String title, String description, Defcon defcon, LocalDate createdOn, @Nullable LocalDate dueDate) {
+        this.title = title;
+        this.description = description;
+        this.defcon = defcon;
+        this.createdOn = createdOn;
+        this.dueDate = dueDate;
+        this.complete = false;
+    }
 }
 
