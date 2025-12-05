@@ -26,6 +26,8 @@ public class TestUtils {
     private static final Clock clock =
             Clock.fixed(Instant.parse("2024-01-01T10:00:00Z"), ZoneOffset.UTC);
 
+    public static LocalDate MOCKED_CREATED_ON = LocalDate.of(2024,1,1);
+
 
     public static String getJsonAsString(String path) throws IOException {
         Path fileName

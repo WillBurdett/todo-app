@@ -47,7 +47,7 @@ public class TodoControllerPostTest {
             var result = performPostWith(getJsonAsString("input/valid_todo_input.json"));
 
             // then
-            String expected = getJsonAsString("output/valid_todo_output.json");
+            String expected = String.format(getJsonAsString("output/valid_todo_output.json"), MOCKED_CREATED_ON);
 
             assertEquals(201, result.getStatus());
             assertJsonEquals(expected, result.getContentAsString());

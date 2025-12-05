@@ -80,7 +80,7 @@ public class TodoService {
         return mapEntityToOutput(entity);
     }
 
-    private TodoOutput mapEntityToOutput(TodoEntity entity){
+    private TodoOutput mapEntityToOutput(TodoEntity entity) {
         return new TodoOutput(
                 entity.getId(),
                 entity.getTitle(),

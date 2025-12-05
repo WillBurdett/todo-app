@@ -7,14 +7,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
 
 @Data
 @Entity
 @AllArgsConstructor
 public class TodoEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "todo_seq")
+    @SequenceGenerator(name = "todo_seq", sequenceName = "todo_id_seq", allocationSize = 1)
     private Long id;
     @Column
     private String title;
@@ -26,19 +26,11 @@ public class TodoEntity {
     private LocalDate createdOn;
     @Column
     private LocalDate dueDate;
+    @Column
     private boolean complete;
 
 
     public TodoEntity() {
-    }
-
-    public TodoEntity(String title, String description, Defcon defcon, @Nullable LocalDate dueDate) {
-        this.title = title;
-        this.description = description;
-        this.defcon = defcon;
-        this.createdOn = LocalDate.now(ZoneId.of("UTC"));
-        this.dueDate = dueDate;
-        this.complete = false;
     }
 
     public TodoEntity(String title, String description, Defcon defcon, LocalDate createdOn, @Nullable LocalDate dueDate) {

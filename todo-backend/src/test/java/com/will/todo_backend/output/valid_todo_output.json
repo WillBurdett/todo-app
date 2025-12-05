@@ -3,7 +3,7 @@
   "title": "test title",
   "description": "test description",
   "defcon": "1",
-  "createdOn": "2024-01-01",
+  "createdOn": "%s",
   "dueDate": null,
   "complete": false
 }
