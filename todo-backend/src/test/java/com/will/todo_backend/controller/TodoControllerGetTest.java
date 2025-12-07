@@ -45,7 +45,7 @@ public class TodoControllerGetTest {
             var result = mockMvc.perform(get("/todo")).andReturn().getResponse();
 
             // then
-            String expected = String.format(getJsonAsString("output/getAllTodos_valid.json"), MOCKED_CREATED_ON, MOCKED_CREATED_ON);
+            String expected = getJsonAsString("output/getAllTodos_valid.json");
 
             assertEquals(200, result.getStatus());
             assertJsonEquals(expected, result.getContentAsString());
