@@ -31,7 +31,7 @@ public class TestUtils {
 
     public static String getJsonAsString(String path) throws IOException {
         Path fileName
-                = Path.of("src/test/java/com/will/todo_backend/" + path);
+                = Path.of("src/test/java/com/will/todo_backend/resources/" + path);
         return Files.readString(fileName);
     }
 
