@@ -44,9 +44,7 @@ public class TodoControllerIntegrationTest {
 
     @BeforeEach
     void setup() {
-        todoRepo.deleteAll();
-        String resetGeneratedIdSQL = "ALTER SEQUENCE todo_id_seq RESTART WITH 1;";
-        jdbcTemplate.execute(resetGeneratedIdSQL);
+        dbReset();
     }
 
     @Nested
@@ -112,5 +110,11 @@ public class TodoControllerIntegrationTest {
             assertEquals(200, result.getStatus());
             assertJsonEquals(expected, result.getContentAsString());
         }
+    }
+
+    private void dbReset() {
+        todoRepo.deleteAll();
+        String resetGeneratedIdSQL = "ALTER SEQUENCE todo_id_seq RESTART WITH 1;";
+        jdbcTemplate.execute(resetGeneratedIdSQL);
     }
 }
