@@ -20,6 +20,7 @@ public class TodoController {
         this.todoService = todoService;
     }
 
+    @CrossOrigin("http://localhost:5173/")
     @GetMapping
     public ResponseEntity<List<TodoOutput>> getAllTodos() {
         List<TodoOutput> responseBody = todoService.getAllTodos();
