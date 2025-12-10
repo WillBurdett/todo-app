@@ -1,6 +1,6 @@
 import listLogo from '/list.svg'
 import './css/App.css'
-import Main from './components/TodoBoard.jsx'
+import TodoBoard from './components/TodoBoard.jsx'
 
 function App() {
 
@@ -13,7 +13,7 @@ function App() {
       </div>
       <h1>Todo List</h1>
       <div className="card main-body">
-        <Main/>
+        <TodoBoard/>
       </div>
       <p className="read-the-docs">
         Click on the logo to learn more about this project
