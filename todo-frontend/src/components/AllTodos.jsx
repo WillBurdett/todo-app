@@ -1,9 +1,15 @@
-import TodoCard from "../cards/TodoCard.jsx"
+import CompleteTodos from "./CompleteTodos.jsx"
+import IncompleteTodos from "./IncompleteTodos.jsx"
 
 export default function AllTodos({allTodos}) {
-    let content = allTodos.map((t) => <TodoCard key={t.id} todo={t} />)
+
+    let incompleteTodos = allTodos.filter(t => !t.complete)
+    let completeTodos = allTodos.filter(t => t.complete)
 
     return (
-        <>{content}</>
+        <>
+            <IncompleteTodos incompleteTodos={incompleteTodos}/>
+            <CompleteTodos completeTodos={completeTodos}/>
+        </>
     )
 }
