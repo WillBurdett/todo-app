@@ -1,6 +1,6 @@
 import listLogo from '/list.svg'
-import './App.css'
-import AllTodos from './components/AllTodos'
+import './css/App.css'
+import Main from './components/TodoBoard.jsx'
 
 function App() {
 
@@ -13,10 +13,7 @@ function App() {
       </div>
       <h1>Todo List</h1>
       <div className="card main-body">
-        <AllTodos/>
-        <p>
-          Create a <code>todo</code> to get started!
-        </p>
+        <Main/>
       </div>
       <p className="read-the-docs">
         Click on the logo to learn more about this project

@@ -37,7 +37,6 @@ export default function TodoCard({ todo }) {
       <footer className="todo-meta">
         <span>Created: {fmt(createdOn)}</span>
         <span>Due: {fmt(dueDate)}</span>
-        <span className="todo-id">#{id}</span>
       </footer>
     </article>
   )
