@@ -5,6 +5,7 @@ export default function IncompleteTodos({incompleteTodos}) {
 
     return (
         <div>
+            <h3>Incomplete</h3>
             {content}
         </div>
     )

@@ -1,0 +1,8 @@
+.todo-grid {
+  display: flex;
+  gap: 2rem;
+}
+
+.todo-grid > div {
+  flex: 1;
+}

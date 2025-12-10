@@ -5,6 +5,7 @@ export default function CompleteTodos({completeTodos}) {
 
     return (
         <div>
+            <h3>Complete</h3>
             {content}
         </div>
     )
