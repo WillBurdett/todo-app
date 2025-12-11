@@ -5,7 +5,6 @@
     "description": "test description",
     "defcon": "1",
     "createdOn": "2024-01-01",
-    "dueDate": null,
     "complete": false
   },
   {
@@ -14,7 +13,6 @@
     "description": "test description",
     "defcon": "1",
     "createdOn": "2024-01-01",
-    "dueDate": null,
     "complete": false
   }
 ]

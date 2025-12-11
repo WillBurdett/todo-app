@@ -54,8 +54,8 @@ public class TodoControllerIntegrationTest {
         void return_all_todo_outputs_with_200() throws Exception {
             // given
             todoRepo.saveAll(List.of(
-                    new TodoEntity("test title", "test description", Defcon.ONE, MOCKED_CREATED_ON, null),
-                    new TodoEntity("test title", "test description", Defcon.ONE, MOCKED_CREATED_ON, null)
+                    new TodoEntity("test title", "test description", Defcon.ONE, MOCKED_DATE, null),
+                    new TodoEntity("test title", "test description", Defcon.ONE, MOCKED_DATE, null)
             ));
 
             // when
@@ -95,7 +95,7 @@ public class TodoControllerIntegrationTest {
         @Test
         void return_todo_output_with_200() throws Exception {
             // given
-            todoRepo.save(new TodoEntity("old title", "test description", Defcon.ONE, MOCKED_CREATED_ON, null));
+            todoRepo.save(new TodoEntity("old title", "test description", Defcon.ONE, MOCKED_DATE, null));
 
             // when
             var result = mockMvc.perform(put("/todo/1")
@@ -105,7 +105,7 @@ public class TodoControllerIntegrationTest {
                     .getResponse();
 
             // then
-            String expected = String.format(getJsonAsString("output/valid_todo_output.json"), MOCKED_CREATED_ON);
+            String expected = String.format(getJsonAsString("output/valid_todo_output.json"), MOCKED_DATE);
 
             assertEquals(200, result.getStatus());
             assertJsonEquals(expected, result.getContentAsString());

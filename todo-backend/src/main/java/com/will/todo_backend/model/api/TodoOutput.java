@@ -16,4 +16,5 @@ public class TodoOutput {
     private LocalDate createdOn;
     private LocalDate dueDate;
     private boolean complete;
+    private LocalDate completedOn;
 }

@@ -4,6 +4,5 @@
   "description": "test description",
   "defcon": "1",
   "createdOn": "%s",
-  "dueDate": null,
   "complete": false
 }

@@ -59,7 +59,16 @@ public class TodoService {
     public TodoOutput toggleComplete(Long id){
         TodoEntity entity = findTodoById(id);
 
-        entity.setComplete(!entity.isComplete());
+        boolean isComplete = !entity.isComplete();
+
+        entity.setComplete(isComplete);
+
+        if (isComplete) {
+            entity.setCompletedOn(LocalDate.now(clock));
+        } else {
+            entity.setCompletedOn(null);
+        }
+
         return saveThenReturn(entity);
     }
 
@@ -88,7 +97,8 @@ public class TodoService {
                 entity.getDefcon(),
                 entity.getCreatedOn(),
                 entity.getDueDate(),
-                entity.isComplete()
+                entity.isComplete(),
+                entity.getCompletedOn()
         );
     }
 }

@@ -44,7 +44,7 @@ class TodoControllerPutTest {
             var result = performPutWith(getJsonAsString("input/valid_todo_input.json"));
 
             // then
-            String expected = String.format(getJsonAsString("output/valid_todo_output.json"), MOCKED_CREATED_ON);
+            String expected = String.format(getJsonAsString("output/valid_todo_output.json"), MOCKED_DATE);
 
             assertEquals(200, result.getStatus());
             assertJsonEquals(expected, result.getContentAsString());
@@ -137,7 +137,7 @@ class TodoControllerPutTest {
                     .getResponse();
 
             // then
-            String expected = String.format(getJsonAsString("output/valid_todo_output.json"), MOCKED_CREATED_ON);
+            String expected = String.format(getJsonAsString("output/valid_todo_output.json"), MOCKED_DATE);
 
             assertEquals(200, result.getStatus());
             assertJsonEquals(expected, result.getContentAsString());

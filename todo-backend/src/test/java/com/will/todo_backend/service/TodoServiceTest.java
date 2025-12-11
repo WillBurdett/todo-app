@@ -5,6 +5,7 @@ import com.will.todo_backend.exceptions.TodoNotFoundException;
 import com.will.todo_backend.model.api.TodoInput;
 import com.will.todo_backend.model.api.TodoOutput;
 import com.will.todo_backend.model.entity.TodoEntity;
+import com.will.todo_backend.model.enums.Defcon;
 import com.will.todo_backend.repository.TodoRepo;
 import org.junit.jupiter.api.*;
 import org.mockito.InjectMocks;
@@ -152,7 +153,7 @@ class TodoServiceTest {
     class toggleComplete_should {
 
         @Test
-        void save_entity_with_opposite_complete_status() {
+        void save_entity_with_complete_status_true_and_set_completedOn() {
             // given
             stubTodoRepoFindById(createTodoEntity(ID));
 
@@ -160,13 +161,35 @@ class TodoServiceTest {
             TodoOutput actualOutput = undertest.toggleComplete(ID);
 
             // then
-            TodoEntity expectedEntity = createTodoEntity(ID);;
-            expectedEntity.setComplete(true);
-            TodoOutput expectedOutput = createTodoOutput(ID);
-            expectedOutput.setComplete(true);
+            TodoOutput completedTodoOutput =
+                    new TodoOutput(
+                            ID,
+                            "test title",
+                            "test description",
+                            Defcon.ONE,
+                            LocalDate.now(clock),
+                            null,
+                            true,
+                            LocalDate.now(clock));
 
-            verify(todoRepo).save(expectedEntity);
-            assertEquals(expectedOutput, actualOutput);
+            verify(todoRepo).save(completedTodoEntity());
+            assertEquals(completedTodoOutput, actualOutput);
+        }
+
+        @Test
+        void save_entity_with_complete_status_false_and_remove_completedOn() {
+            // given
+            stubTodoRepoFindById(completedTodoEntity());
+
+            // when
+            TodoOutput actualOutput = undertest.toggleComplete(ID);
+
+            // then
+            TodoEntity incompleteTodoEntity = createTodoEntity(ID);
+            TodoOutput incompleteTodoOutput = createTodoOutput(ID);
+
+            verify(todoRepo).save(incompleteTodoEntity);
+            assertEquals(incompleteTodoOutput, actualOutput);
         }
 
         @Test
@@ -177,6 +200,18 @@ class TodoServiceTest {
             });
 
             assertEquals("Todo not found with id: " + ID, ex.getMessage());
+        }
+
+        private TodoEntity completedTodoEntity() {
+            return new TodoEntity(
+                    ID,
+                    "test title",
+                    "test description",
+                    Defcon.ONE,
+                    MOCKED_DATE,
+                    null,
+                    true,
+                    MOCKED_DATE);
         }
     }
 

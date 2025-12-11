@@ -28,6 +28,8 @@ public class TodoEntity {
     private LocalDate dueDate;
     @Column
     private boolean complete;
+    @Column
+    private LocalDate completedOn;
 
 
     public TodoEntity() {
