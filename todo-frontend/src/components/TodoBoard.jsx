@@ -18,7 +18,6 @@ export default function TodoBoard() {
     if (isError) {
         content = <ErrorMessage err={error}/>
     }
-
     if (data) {
         content = data.length > 0 ? <AllTodos allTodos={data}/> : <GetStartedMessage/>;
     }

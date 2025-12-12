@@ -1,8 +1,6 @@
 .todo-grid {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 2rem;
-}
-
-.todo-grid > div {
-  flex: 1;
+  align-items: start;
 }

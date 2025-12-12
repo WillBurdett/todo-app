@@ -9,6 +9,7 @@ export default function TodoCard({ todo }) {
     createdOn,
     dueDate,
     complete,
+    completedOn
   } = todo
 
   const fmt = (d) => {
@@ -35,8 +36,8 @@ export default function TodoCard({ todo }) {
       <p className="todo-desc">{description}</p>
 
       <footer className="todo-meta">
-        <span>Created: {fmt(createdOn)}</span>
-        <span>Due: {fmt(dueDate)}</span>
+        {/* <span>Created: {fmt(createdOn)}</span> */}
+        {complete ? <span>Completed: {fmt(completedOn)}</span> : <span>Due: {fmt(dueDate)}</span>}
       </footer>
     </article>
   )

@@ -5,8 +5,8 @@ export default function IncompleteTodos({incompleteTodos}) {
 
     return (
         <div>
-            <h3>Incomplete</h3>
-            {content}
+            <h3>Todo</h3>
+            {content.length > 0 ? content : <div className="ghost-card"></div>}
         </div>
     )
 }

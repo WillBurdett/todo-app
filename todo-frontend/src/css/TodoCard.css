@@ -87,6 +87,16 @@
   color: #9b9b9b;
   display: flex;
   gap: 16px;
-  align-items: center;
-  flex-wrap: wrap;
+  margin: 0 auto;
+}
+
+.ghost-card {
+  background: #1a1a1a;
+  border-radius: 14px;
+  padding: 20px;
+  margin: 16px 0;
+  opacity: 0.2;
+  height: 140px;
+  /* same as a typical card height */
+  border: 1px dashed rgba(255, 255, 255, 0.1);
 }

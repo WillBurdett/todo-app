@@ -6,7 +6,7 @@ export default function CompleteTodos({completeTodos}) {
     return (
         <div>
             <h3>Complete</h3>
-            {content}
+            {content.length > 0 ? content : <div className="ghost-card"></div>}
         </div>
     )
 }
