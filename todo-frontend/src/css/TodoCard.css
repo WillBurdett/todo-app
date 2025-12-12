@@ -91,12 +91,27 @@
 }
 
 .ghost-card {
-  background: #1a1a1a;
+  position: relative;
+  background: #2a2a2a;
+  /* lighter grey */
   border-radius: 14px;
   padding: 20px;
   margin: 16px 0;
-  opacity: 0.2;
   height: 140px;
-  /* same as a typical card height */
-  border: 1px dashed rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  /* prevent pattern spilling past rounded corners */
+}
+
+/* the diagonal line pattern */
+.ghost-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(45deg,
+      rgba(255, 255, 255, 0.05) 0px,
+      rgba(255, 255, 255, 0.05) 1px,
+      transparent 1px,
+      transparent 6px);
+  pointer-events: none;
 }
