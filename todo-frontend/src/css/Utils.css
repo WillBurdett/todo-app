@@ -1,0 +1,21 @@
+.get-started-message-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.plus-icon {
+    border-radius: 50%;
+    padding: 1em;
+    height: 1em;
+    width: 1em;
+}
+
+.plus-icon:hover {
+    background: #2a2a2a;
+    outline: 1px solid rgba(255, 255, 255, 0.08);
+    background-image: repeating-linear-gradient(45deg,
+                rgba(255, 255, 255, 0.05) 0px,
+                rgba(255, 255, 255, 0.05) 1px,
+                transparent 1px,
+                transparent 6px);
+}

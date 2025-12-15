@@ -1,8 +1,16 @@
-export function GetStartedMessage() {
+import '../css/Utils.css'
+import plusIcon from '/plus-symbol.svg'
+
+export function GetStartedMessage({handlePlusIconClick}) {
+
+  const handleCreateTodoSelected = () => {
+    handlePlusIconClick();
+  };
+
   return (
-    <p>
-      Create a <code>todo</code> to get started!
-    </p>
+    <span className='get-started-message-container'>
+      <p>Create a <code>todo</code> to get started!</p><img src={plusIcon} className="plus-icon" alt="plus symbol" onClick={handleCreateTodoSelected} />
+    </span>
   );
 }
 

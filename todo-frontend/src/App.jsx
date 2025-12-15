@@ -1,4 +1,4 @@
-import listLogo from '/list.svg'
+import Logo from './components/Logo.jsx'
 import './css/App.css'
 import TodoBoard from './components/TodoBoard.jsx'
 
@@ -6,11 +6,7 @@ function App() {
 
   return (
     <>
-      <div>
-        <a target="_blank" href='https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1'>
-          <img src={listLogo} className="logo" alt="todo app logo" />
-        </a>
-      </div>
+      <Logo/>
       <h1>Todo List</h1>
       <div className="card main-body">
         <TodoBoard/>
