@@ -30,7 +30,6 @@ public class TodoController {
     @CrossOrigin("http://localhost:5173/")
     @PostMapping
     public ResponseEntity<TodoOutput> createTodo(@Valid @RequestBody TodoInput todoInput) {
-        validateTodoInput(todoInput);
         TodoOutput responseBody = todoService.createTodo(todoInput);
         return new ResponseEntity<>(responseBody, HttpStatus.CREATED);
     }
@@ -53,7 +52,4 @@ public class TodoController {
         return  new ResponseEntity<>(responseBody, HttpStatus.OK);
     }
 
-    private void validateTodoInput(TodoInput input) {
-
-    }
 }
