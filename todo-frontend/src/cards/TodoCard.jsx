@@ -6,7 +6,6 @@ export default function TodoCard({ todo }) {
     title,
     description,
     defcon,
-    createdOn,
     dueDate,
     complete,
     completedOn
@@ -36,7 +35,6 @@ export default function TodoCard({ todo }) {
       <p className="todo-desc">{description}</p>
 
       <footer className="todo-meta">
-        {/* <span>Created: {fmt(createdOn)}</span> */}
         {complete ? <span>Completed: {fmt(completedOn)}</span> : <span>Due: {fmt(dueDate)}</span>}
       </footer>
     </article>

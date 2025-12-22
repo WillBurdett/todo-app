@@ -1,10 +1,10 @@
 import '../css/Utils.css'
 import plusIcon from '/plus-symbol.svg'
 
-export function GetStartedMessage({handlePlusIconClick}) {
+export function GetStartedMessage({ toggleCreateTodoForm }) {
 
   const handleCreateTodoSelected = () => {
-    handlePlusIconClick();
+    toggleCreateTodoForm(true);
   };
 
   return (

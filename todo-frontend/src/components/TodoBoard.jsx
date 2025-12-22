@@ -9,8 +9,8 @@ export default function TodoBoard() {
 
     const [createTodoSelected, setCreateTodoSelected] = useState(false);
 
-    const handlePlusIconClick = () => {
-        setCreateTodoSelected(!createTodoSelected)
+    const toggleCreateTodoForm = (showForm) => {
+        setCreateTodoSelected(showForm)
     }
 
     const { data, isPending, isError, error } = useQuery({
@@ -27,9 +27,9 @@ export default function TodoBoard() {
         content = <ErrorMessage err={error}/>
     }
     if (data) {
-        content = data.length > 0 ? <AllTodos allTodos={data} /> : <GetStartedMessage handlePlusIconClick={handlePlusIconClick}/>;
+        content = data.length > 0 ? <AllTodos allTodos={data} /> : <GetStartedMessage toggleCreateTodoForm={toggleCreateTodoForm}/>;
         if (createTodoSelected) {
-            content = <CreateTodoForm handlePlusIconClick={handlePlusIconClick}/>;
+            content = <CreateTodoForm toggleCreateTodoForm={toggleCreateTodoForm} />;
         }
     }
 

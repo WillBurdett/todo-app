@@ -1,12 +1,23 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from "react";
 import { createTodo } from "../utils/http";
 import '../css/CreateTodoForm.css'
 
-export default function CreateTodoForm({ handlePlusIconClick }) {
+export default function CreateTodoForm({ toggleCreateTodoForm }) {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [defcon, setDefcon] = useState("5");
     const [dueDate, setDueDate] = useState("");
+
+    const queryClient = useQueryClient()
+
+    const { mutate, isPending, isError, error } = useMutation({
+        mutationFn: createTodo,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['allTodos'] })
+            toggleCreateTodoForm(false)
+        }
+    })
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -18,12 +29,7 @@ export default function CreateTodoForm({ handlePlusIconClick }) {
             dueDate
         };
 
-        try {
-            createTodo(newTodo)
-        } catch (err) {
-            console.log(err)
-        }
-        handlePlusIconClick();
+        mutate(newTodo)
 
         // Optional: reset form
         setTitle("");
