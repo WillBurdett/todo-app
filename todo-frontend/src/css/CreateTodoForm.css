@@ -1,0 +1,14 @@
+.form-row {
+    display: flex;
+    gap: 1rem;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+}
+
+.todo-form-submit {
+    margin: 0 auto;
+}

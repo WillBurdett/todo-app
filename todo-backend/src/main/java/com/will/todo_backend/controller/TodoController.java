@@ -27,6 +27,7 @@ public class TodoController {
         return new ResponseEntity<>(responseBody, HttpStatus.OK);
     }
 
+    @CrossOrigin("http://localhost:5173/")
     @PostMapping
     public ResponseEntity<TodoOutput> createTodo(@Valid @RequestBody TodoInput todoInput) {
         validateTodoInput(todoInput);

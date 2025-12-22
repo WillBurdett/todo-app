@@ -10,7 +10,7 @@ export default function TodoBoard() {
     const [createTodoSelected, setCreateTodoSelected] = useState(false);
 
     const handlePlusIconClick = () => {
-        setCreateTodoSelected(true)
+        setCreateTodoSelected(!createTodoSelected)
     }
 
     const { data, isPending, isError, error } = useQuery({
