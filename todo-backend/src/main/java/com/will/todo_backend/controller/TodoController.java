@@ -40,12 +40,14 @@ public class TodoController {
         return new ResponseEntity<>(responseBody, HttpStatus.OK);
     }
 
+    @CrossOrigin("http://localhost:5173/")
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<Void> deleteTodo(@PathVariable Long id) {
         todoService.deleteTodo(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @CrossOrigin("http://localhost:5173/")
     @PutMapping(path = "/toggle-complete/{id}")
     public ResponseEntity<TodoOutput> toggleComplete(@PathVariable Long id) {
         TodoOutput responseBody = todoService.toggleComplete(id);

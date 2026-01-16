@@ -2,15 +2,20 @@
 
 /* Card container */
 .todo-card {
-  background: #1f1f1f;                  /* deep charcoal to match screenshot */
-  border-radius: 14px;                  /* soft rounded corners */
+  background: #1f1f1f;
+  /* deep charcoal to match screenshot */
+  border-radius: 14px;
+  /* soft rounded corners */
   padding: 20px;
   margin: 16px 0;
 
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);  /* soft dark shadow */
-  border: 1px solid rgba(255, 255, 255, 0.05); /* subtle border for definition */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  /* soft dark shadow */
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  /* subtle border for definition */
 
-  color: #e5e5e5;                       /* soft light gray, not pure white */
+  color: #e5e5e5;
+  /* soft light gray, not pure white */
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -55,7 +60,8 @@
 
 /* DEFCON badge accent */
 .badge.defcon {
-  color: #00e676;                /* soft neon green (matching logo aesthetic) */
+  color: #00e676;
+  /* soft neon green (matching logo aesthetic) */
   font-weight: 700;
   border-color: rgba(0, 230, 118, 0.4);
 }
@@ -63,14 +69,15 @@
 /* Status badges */
 .badge.status.done {
   background: rgba(0, 200, 83, 0.15);
-  color: #00c853;                /* green accent */
+  color: #00c853;
+  /* green accent */
   border-color: rgba(0, 200, 83, 0.4);
 }
 
-.badge.status.pending {
+.badge.status.delete {
   background: rgba(255, 193, 7, 0.12);
-  color: #ffca28;
-  border-color: rgba(255, 193, 7, 0.35);
+  color: #eb2f16;
+  border-color: rgb(202, 9, 9);
 }
 
 /* Description */
