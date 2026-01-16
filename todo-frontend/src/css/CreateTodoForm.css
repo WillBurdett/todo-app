@@ -12,3 +12,7 @@ textarea {
 .todo-form-submit {
     margin: 0 auto;
 }
+
+.close-form-button {
+    display: flex;
+}

@@ -40,6 +40,11 @@ export default function CreateTodoForm({ toggleCreateTodoForm }) {
 
     return (
         <form  className="todo-form" onSubmit={handleSubmit}>
+            <div className='hover-grey'>
+                <div className='close-form-button' onClick={() => toggleCreateTodoForm(false)}>
+                    ⬅
+                </div>
+            </div>
 
                 <div className="form-group--left">
                     <div className="form-group">
