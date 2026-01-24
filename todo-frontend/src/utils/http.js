@@ -17,6 +17,24 @@ export async function fetchAllTodos() {
   return data
 }
 
+export async function editTodo({id, updatedTodo}) {
+  const res = await fetch('http://localhost:8080/todo/' + id, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(updatedTodo)
+  })
+
+  if (!res.ok) {
+    const text = await res.text()
+    throw new Error(`Failed to update todo: ${res.status} ${text}`)
+  }
+
+  const data = await res.json()
+  return data
+}
+
 export async function createTodo(todo) {
   const res = await fetch('http://localhost:8080/todo', {
     method: 'POST',

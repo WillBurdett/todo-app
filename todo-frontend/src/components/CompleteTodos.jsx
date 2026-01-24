@@ -1,7 +1,10 @@
 import TodoCard from "../cards/TodoCard.jsx"
 
-export default function CompleteTodos({completeTodos}) {
-    let content = completeTodos.map((t) => <TodoCard key={t.id} todo={t} />)
+export default function CompleteTodos({ completeTodos }) {
+    const cannotUpdateCompletedTodo = () => {
+        console.log('You cannot edit a completed todo!')
+    }
+    let content = completeTodos.map((t) => <TodoCard key={t.id} todo={t} toggleEditableTodoForm={cannotUpdateCompletedTodo}/>)
 
     return (
         <div>

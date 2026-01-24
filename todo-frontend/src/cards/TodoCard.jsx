@@ -1,8 +1,9 @@
 import '../css/TodoCard.css'
-import { deleteTodo, markTodoComplete } from '../utils/http.js'
+import { deleteTodo, editTodo, markTodoComplete } from '../utils/http.js'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-export default function TodoCard({ todo }) {
+export default function TodoCard({ todo, toggleEditableTodoForm }) {
+
   const {
     id,
     title,
@@ -24,6 +25,19 @@ export default function TodoCard({ todo }) {
 
   const queryClient = useQueryClient()
 
+  // ---- Edit todo handling ----
+  const editTodoMutation = useMutation({
+    mutationFn: () => editTodo(id, todo),
+    onSuccess: () => {
+      // invalidate or update cache so UI refreshes
+      queryClient.invalidateQueries({ queryKey: ['allTodos'] })
+    }
+  })
+  const submitUpdateTodo = () => {
+    editTodoMutation.mutate()
+  }
+
+  // ---- Complete todo handling ----
   const markCompleteMutation = useMutation({
     mutationFn: () => markTodoComplete(id),
     onSuccess: () => {
@@ -36,6 +50,7 @@ export default function TodoCard({ todo }) {
     markCompleteMutation.mutate()
   }
 
+  // ---- Delete todo handling ----
   const deleteMutation = useMutation({
     mutationFn: () => deleteTodo(id),
     onSuccess: () => {
@@ -54,6 +69,9 @@ export default function TodoCard({ todo }) {
         <h3>{title}</h3>
         <div className="badges">
           <span className="badge defcon">D{defcon}</span>
+          <span className={`badge status edit`} onClick={() => toggleEditableTodoForm(true, todo)}>
+            {complete ? 'Done' : '✏️'}
+          </span>
           <span className={`badge status done`} onClick={() => handleMarkTodoComplete()}>
             {complete ? 'Done' : '✔'}
           </span>

@@ -66,6 +66,13 @@
   border-color: rgba(0, 230, 118, 0.4);
 }
 
+/* Edit badges */
+.badge.status.edit {
+  background: rgba(255, 193, 7, 0.12);
+  color: #ebb616;
+  border-color: rgb(242, 190, 20);
+}
+
 /* Status badges */
 .badge.status.done {
   background: rgba(0, 200, 83, 0.15);

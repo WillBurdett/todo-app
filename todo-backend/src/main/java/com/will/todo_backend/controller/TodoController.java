@@ -34,6 +34,7 @@ public class TodoController {
         return new ResponseEntity<>(responseBody, HttpStatus.CREATED);
     }
 
+    @CrossOrigin("http://localhost:5173/")
     @PutMapping(path = "/{id}")
     public ResponseEntity<TodoOutput> updateTodo(@PathVariable Long id, @Valid @RequestBody TodoInput todoInput) {
         TodoOutput responseBody = todoService.updateTodo(id, todoInput);

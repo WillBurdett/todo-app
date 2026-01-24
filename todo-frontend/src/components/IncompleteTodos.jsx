@@ -1,7 +1,7 @@
 import TodoCard from "../cards/TodoCard.jsx"
 
-export default function IncompleteTodos({incompleteTodos}) {
-    let content = incompleteTodos.map((t) => <TodoCard key={t.id} todo={t} />)
+export default function IncompleteTodos({ incompleteTodos, toggleEditableTodoForm }) {
+    let content = incompleteTodos.map((t) => <TodoCard key={t.id} todo={t} toggleEditableTodoForm={toggleEditableTodoForm}/>)
 
     return (
         <div>
